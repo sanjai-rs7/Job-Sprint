@@ -6,7 +6,7 @@ interface ContainerProp {
   className?: string;
 }
 
-const Container = ({ children, className }: ContainerProp) => {
+const ContainerComponent = ({ children, className }: ContainerProp) => {
   return (
     <div
       className={cn("container mx-auto px-4 md:px-8 py-4 w-full", className)}
@@ -15,4 +15,4 @@ const Container = ({ children, className }: ContainerProp) => {
     </div>
   );
 };
-export default Container;
+export default ContainerComponent;

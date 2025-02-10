@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import Container from "./Container";
+import ContainerComponent from "./ContainerComponent";
 import LogoContainer from "./LogoContainer";
 import { MainRoutes } from "@/lib/helper";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <header className="w-full border-b duration-150 transition-all ease-in-out">
-      <Container>
+      <ContainerComponent>
         <div className="flex items-center gap-6">
           <LogoContainer />
           <nav className="hidden md:flex items-center gap-6">
@@ -51,7 +51,7 @@ const Header = () => {
             <ToggleContainer />
           </div>
         </div>
-      </Container>
+      </ContainerComponent>
     </header>
   );
 };
