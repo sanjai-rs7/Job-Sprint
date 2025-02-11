@@ -8,6 +8,7 @@ import Generate from "./views/Generate";
 import Dashboard from "./routes/Dashboard";
 import MainLayout from "./layouts/MainLayout";
 import CreateEditPage from "./routes/CreateEditPage";
+import MockLoadPage from "./routes/MockLoadPage";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/generate" element={<Generate />}>
             <Route index element={<Dashboard />} />
             <Route path=":interviewId" element={<CreateEditPage />} />
+            <Route path="interview/:interviewId" element={<MockLoadPage />} />
           </Route>
         </Route>
       </Routes>
