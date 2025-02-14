@@ -4,10 +4,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
-interface ModalComponentProps {
+interface ModalProps {
   title: string;
   description: string;
   isOpen: boolean;
@@ -21,18 +20,22 @@ const ModalComponent = ({
   isOpen,
   onClose,
   children,
-}: ModalComponentProps) => {
+}: ModalProps) => {
+  const onChange = (open: boolean) => {
+    if (!open) {
+      onClose();
+    }
+  };
+
   return (
-    <Dialog>
-      <DialogTrigger>Open</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={onChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
+
+        <div>{children}</div>
       </DialogContent>
     </Dialog>
   );

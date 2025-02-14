@@ -1,5 +1,11 @@
+import Webcam from "react-webcam";
+
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <div>
+      <Webcam></Webcam>
+    </div>
+  );
 };
 
 export default HomePage;

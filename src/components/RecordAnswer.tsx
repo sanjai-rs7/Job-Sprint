@@ -2,7 +2,6 @@ import {
   CircleStop,
   Loader,
   Mic,
-  RefreshCcwDotIcon,
   RefreshCw,
   Save,
   Video,
@@ -15,6 +14,20 @@ import { useEffect, useState } from "react";
 import useSpeechToText, { ResultType } from "react-hook-speech-to-text";
 import { toast } from "sonner";
 import { chatSession } from "@/scripts/gemini";
+import SaveModal from "./SaveModal";
+import { useAuth } from "@clerk/clerk-react";
+import { useParams } from "react-router-dom";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { db } from "@/config/firebase.config";
 
 interface RecordAnswerProps {
   obj: { question: string; answer: string };
@@ -44,11 +57,15 @@ const RecordAnswer = ({
     useLegacyResults: false,
   });
 
+  const { userId } = useAuth();
+  const { interviewId } = useParams();
   const [userAnswer, setUserAnswer] = useState("");
   const [isAiGenerating, setIsAiGenerating] = useState(false);
   const [feedbackAndRating, setFeedbackAndRating] = useState<AIResponse | null>(
     null
   );
+  const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const combinedTranscripts = results
@@ -129,8 +146,72 @@ const RecordAnswer = ({
     startSpeechToText();
   };
 
+  const saveUserAnswer = async () => {
+    setLoading(true);
+    if (!feedbackAndRating) {
+      return;
+    }
+
+    const currQues = obj.question;
+    try {
+      const userAnswerQuery = query(
+        collection(db, "userAnswers"),
+        where("userId", "==", userId),
+        where("question", "==", currQues)
+      );
+      const queryRes = await getDocs(userAnswerQuery);
+      console.log(queryRes);
+
+      if (!queryRes.empty) {
+        console.log("Query res size : ", queryRes.size);
+        toast.info("Already Answered", {
+          description: "You have already answered this question",
+        });
+        return;
+      } else {
+        const quesAnsRef = await addDoc(collection(db, "userAnswers"), {
+          mockIdRef: interviewId,
+          question: obj.question,
+          correct_ans: obj.answer,
+          user_ans: userAnswer,
+          feedback: feedbackAndRating.feedback,
+          rating: feedbackAndRating.ratings,
+          createdAt: serverTimestamp(),
+          userId,
+        });
+        const id = quesAnsRef.id;
+        await updateDoc(doc(db, "userAnswers", id), {
+          id,
+          updatedAt: serverTimestamp(),
+        });
+        toast.success("Saved Sucessfully", {
+          description: "Your answer has been saved sucessfully.",
+        });
+      }
+      console.log("Finished");
+      setUserAnswer("");
+      stopSpeechToText();
+    } catch (error) {
+      console.log(error);
+      toast("Error", {
+        description: "An error occurred while generating feedback.",
+      });
+    } finally {
+      setLoading(false);
+      setOpenModal(false);
+    }
+  };
+
   return (
     <div>
+      <SaveModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+        onConfirm={() => {
+          saveUserAnswer();
+        }}
+        loading={loading}
+      />
       <div className="flex items-center justify-center my-6">
         <div className="w-full h-[375px] md:w-[500px] bg-gray-200 flex items-center justify-center rounded-md">
           {isWebCamEnabled ? (
@@ -185,7 +266,9 @@ const RecordAnswer = ({
               <Save className="min-w-5 min-h-5" />
             )
           }
-          onClick={() => {}}
+          onClick={() => {
+            setOpenModal(!openModal);
+          }}
           disbaled={!feedbackAndRating}
         />
       </div>
