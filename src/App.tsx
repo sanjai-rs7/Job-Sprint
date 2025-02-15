@@ -10,6 +10,7 @@ import MainLayout from "./layouts/MainLayout";
 import CreateEditPage from "./routes/CreateEditPage";
 import MockLoadPage from "./routes/MockLoadPage";
 import MockInterviewPage from "./routes/MockInterviewPage";
+import Feedback from "./routes/Feedback";
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
               path="interview/:interviewId/start"
               element={<MockInterviewPage />}
             />
+            <Route path="feedback/:interviewId" element={<Feedback />} />
           </Route>
         </Route>
       </Routes>

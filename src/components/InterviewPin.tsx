@@ -5,6 +5,18 @@ import { cn } from "@/lib/utils";
 import { TooltipButton } from "./ToolTipButton";
 import { Newspaper, Pencil, Sparkles, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  where,
+  writeBatch,
+} from "firebase/firestore";
+import { db } from "@/config/firebase.config";
+import { toast } from "sonner";
+import { useState } from "react";
+import { useAuth } from "@clerk/clerk-react";
 
 interface InterviewPinProps {
   data: Interview;
@@ -13,6 +25,36 @@ interface InterviewPinProps {
 
 const InterviewPin = ({ data, isMockPage = false }: InterviewPinProps) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { userId } = useAuth();
+
+  const onDelete = async () => {
+    setLoading(true);
+    try {
+      const interviewRef = doc(db, "interviews", data.id);
+      const userAnswerQuery = query(
+        collection(db, "userAnswers"),
+        where("userId", "==", userId),
+        where("mockIdRef", "==", data.id)
+      );
+
+      const querySnap = await getDocs(userAnswerQuery);
+      const batch = writeBatch(db);
+      batch.delete(interviewRef);
+      querySnap.forEach((docRef) => batch.delete(docRef.ref));
+      await batch.commit();
+      toast.success("Success", {
+        description: "Your interview has been removed",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Error", {
+        description: "Something went wrong!. Please try again later",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Card className="p-4 rounded-lg shadow-none hover:shadow-xl shadow-gray-400 cursor-pointer transition-all space-y-4">
       <CardTitle>{data.position}</CardTitle>
@@ -49,7 +91,9 @@ const InterviewPin = ({ data, isMockPage = false }: InterviewPinProps) => {
             <TooltipButton
               content="Edit"
               buttonVariant={"ghost"}
-              onClick={() => {}}
+              onClick={() => {
+                navigate(`/generate/${data.id}`);
+              }}
               disbaled={false}
               buttonClassName="hover:text-purple-800"
               icon={<Pencil />}
@@ -59,11 +103,11 @@ const InterviewPin = ({ data, isMockPage = false }: InterviewPinProps) => {
             <TooltipButton
               content="Delete"
               buttonVariant={"ghost"}
-              onClick={() => {}}
+              onClick={onDelete}
               disbaled={false}
               buttonClassName="hover:text-red-500"
               icon={<Trash2 />}
-              loading={false}
+              loading={loading}
             />
 
             <TooltipButton

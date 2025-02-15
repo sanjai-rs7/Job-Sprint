@@ -14,7 +14,7 @@ const MockInterviewPage = () => {
   const { interviewId } = useParams();
   const [interview, setInterview] = useState<Interview | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isWebCamEnabled, setIsWebCamEnabled] = useState(false);
+  // const [isWebCamEnabled, setIsWebCamEnabled] = useState(false);
 
   const navigate = useNavigate();
 

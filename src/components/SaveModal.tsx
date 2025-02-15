@@ -1,4 +1,3 @@
-import { Ghost } from "lucide-react";
 import ModalComponent from "./ModalComponent";
 import { Button } from "./ui/button";
 

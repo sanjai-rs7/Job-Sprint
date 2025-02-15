@@ -46,7 +46,6 @@ const RecordAnswer = ({
   setIsWebCamEnabled,
 }: RecordAnswerProps) => {
   const {
-    error,
     interimResult,
     isRecording,
     results,

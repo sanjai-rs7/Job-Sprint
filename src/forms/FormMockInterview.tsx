@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { chatSession } from "@/scripts/gemini";
 import {
@@ -55,7 +55,7 @@ const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
   });
 
   const { isValid, isSubmitting } = form.formState;
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { userId } = useAuth();
   const title = initialData
@@ -117,11 +117,21 @@ const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
 
   const onSubmit = async (data: formData) => {
     try {
+      setIsLoading(true);
       if (initialData) {
         // update API
+        const aiResult = await generateAiResult(data);
+
+        await updateDoc(doc(db, "interviews", initialData?.id), {
+          questions: aiResult,
+          ...data,
+          updatedAt: serverTimestamp(),
+        });
+        toast.success(toastMessage.title, {
+          description: toastMessage.description,
+        });
       } else {
         // create API
-
         if (isValid) {
           const aiResult = await generateAiResult(data);
 
@@ -153,6 +163,17 @@ const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (initialData) {
+      form.reset({
+        position: initialData?.position,
+        description: initialData?.description,
+        experience: initialData?.experience,
+        techStack: initialData?.techStack,
+      });
+    }
+  }, [initialData, form]);
 
   return (
     <div>
