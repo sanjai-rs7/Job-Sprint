@@ -93,12 +93,12 @@ const Footer = () => {
               <SocialLink
                 href="https://facebook.com"
                 icon={<Facebook size={24} />}
-                hoverColor="text-blue-500"
+                hoverColor="text-d-500"
               />
               <SocialLink
                 href="https://twitter.com"
                 icon={<Twitter size={24} />}
-                hoverColor="text-blue-400"
+                hoverColor="text-d-400"
               />
               <SocialLink
                 href="https://instagram.com"
@@ -108,7 +108,7 @@ const Footer = () => {
               <SocialLink
                 href="https://linkedin.com"
                 icon={<Linkedin size={24} />}
-                hoverColor="text-blue-700"
+                hoverColor="text-d-700"
               />
             </div>
           </div>

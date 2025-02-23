@@ -9,7 +9,7 @@ const ProfileContainer = () => {
   if (!isLoaded) {
     return (
       <div className="flex items-center">
-        <Loader className="w-4 h-4 animate-spin text-emerald-500" />
+        <Loader className="w-4 h-4 animate-spin text-purple-500" />
       </div>
     );
   }

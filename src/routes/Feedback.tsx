@@ -22,7 +22,6 @@ import {
   where,
 } from "firebase/firestore";
 import { CircleCheck, Star } from "lucide-react";
-import { NumericKeys } from "node_modules/react-hook-form/dist/types/path/common";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -147,7 +146,7 @@ const Feedback = () => {
                 className={cn(
                   "px-5 py-3 flex items-center justify-between text-base rounded-t-lg transition-colors hover:no-underline",
                   activeFeed === feedback.id
-                    ? "bg-gradient-to-r from-purple-50 to-blue-50"
+                    ? "bg-gradient-to-r from-purple-50 to-emerald-50"
                     : "hover:bg-gray-50"
                 )}
               >
@@ -171,9 +170,9 @@ const Feedback = () => {
                   </CardDescription>
                 </Card>
 
-                <Card className="border-none space-y-3 p-4 bg-blue-100 rounded-lg shadow-md">
+                <Card className="border-none space-y-3 p-4 bg-emerald-100 rounded-lg shadow-md">
                   <CardTitle className="flex items-center">
-                    <CircleCheck className="mr-2 text-blue-500" />
+                    <CircleCheck className="mr-2 text-emerald-500" />
                     Your Answer
                   </CardTitle>
 

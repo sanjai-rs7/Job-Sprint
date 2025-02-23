@@ -9,7 +9,7 @@ const LoaderPage = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <Loader className="size-10 text-emerald-500 animate-spin object-cover" />
+      <Loader className="size-10 text-purple-500 animate-spin object-cover" />
     </div>
   );
 };

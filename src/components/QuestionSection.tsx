@@ -27,6 +27,9 @@ const QuestionSection = ({ quesArr }: QuestionSectionProps) => {
       setCurrentSpeech(speech);
     }
   };
+  if (currentSpeech) {
+    console.log();
+  }
 
   return (
     <div className="w-full min-h-96 border-2 rounded-lg p-4">
@@ -41,7 +44,7 @@ const QuestionSection = ({ quesArr }: QuestionSectionProps) => {
               key={ind}
               value={obj.question}
               className={cn(
-                "data-[state=active]:bg-emerald-200 data-[state=active]:shadow-md px-3 rounded-full"
+                "data-[state=active]:bg-purple-200 data-[state=active]:shadow-md px-3 rounded-full"
               )}
             >{`Question ${ind + 1}`}</TabsTrigger>
           ))}

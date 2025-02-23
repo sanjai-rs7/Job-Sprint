@@ -4,20 +4,16 @@ import LoaderPage from "@/views/LoaderPage";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 const AuthHandler = () => {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
-  const pathname = useLocation().pathname;
-  const navigate = useNavigate();
   //   console.log(user);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const storeData = async () => {
       if (!isSignedIn || !user) return;
-
       setLoading(true);
       try {
         const userRef = doc(db, "users", user.id);

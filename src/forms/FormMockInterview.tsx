@@ -58,9 +58,6 @@ const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { userId } = useAuth();
-  const title = initialData
-    ? initialData.position
-    : "Create a new Mock Interview";
 
   const breadCrumbPage = initialData ? initialData.position : "Create";
   const actions = initialData ? "Save Changes" : "Create";

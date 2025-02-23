@@ -3,7 +3,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Home } from "lucide-react";
@@ -25,7 +24,7 @@ const CustomBreadcrumb = ({
           <BreadcrumbItem>
             <BreadcrumbLink
               href="/"
-              className="flex items-center justify-center hover:text-emerald-500"
+              className="flex items-center justify-center hover:text-purple-500"
             >
               <Home className="size-4 mr-2" /> Home
             </BreadcrumbLink>
@@ -38,7 +37,7 @@ const CustomBreadcrumb = ({
                 <BreadcrumbItem>
                   <BreadcrumbLink
                     href={item.link}
-                    className="flex items-center justify-center hover:text-emerald-500"
+                    className="flex items-center justify-center hover:text-purple-500"
                   >
                     {item.label}
                   </BreadcrumbLink>
@@ -50,7 +49,7 @@ const CustomBreadcrumb = ({
           <BreadcrumbItem>
             <BreadcrumbLink
               href="/"
-              className="flex items-center justify-center hover:text-emerald-500"
+              className="flex items-center justify-center hover:text-purple-500"
             >
               {breadCrumbPage}
             </BreadcrumbLink>
